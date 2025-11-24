@@ -98,10 +98,9 @@ st.markdown("""
 try:
     api_key = st.secrets["GEMINI_API_KEY"]
 except:
-    # Cadangan kosong agar tidak error saat upload ke GitHub
+    # Cadangan kosong agar aman di GitHub
     api_key = "" 
 
-# Konfigurasi hanya jika API Key tersedia
 if api_key:
     genai.configure(api_key=api_key)
 
@@ -163,7 +162,7 @@ def get_best_model():
 
 def generate_rpp_deep_learning(data):
     model_name = get_best_model()
-    if not model_name: return "Error: Koneksi AI bermasalah. Cek API Key."
+    if not model_name: return "Error: Masalah koneksi API."
     
     profil_str = ", ".join(data['profil'])
     asesmen_str = ", ".join(data['asesmen'])
@@ -414,7 +413,7 @@ with st.form("form_rpp"):
     submitted = st.form_submit_button("BUAT RPP SEKARANG")
 
 if submitted:
-    if not api_key: st.error("⚠️ API Key belum terdeteksi di sistem!")
+    if not api_key: st.error("⚠️ API Key belum terdeteksi!")
     elif not topik: st.warning("⚠️ Mohon isi Topik materi terlebih dahulu.")
     else:
         with st.spinner('Sedang menyusun RPP Lengkap...'):
@@ -426,21 +425,13 @@ if submitted:
                 "metode":metode, "profil":profil, "asesmen":asesmen
             }
             
-            # 1. Generate Content
             hasil = generate_rpp_deep_learning(data)
-            
             if "Error" in hasil:
                 st.error(hasil)
             else:
                 st.success("✅ RPP Berhasil Dibuat!")
-                
-                # 2. Preview
                 with st.expander("📄 Lihat Hasil (Preview)", expanded=True): st.markdown(hasil)
-                
-                # 3. Create Files
                 docx = create_docx_formatted(hasil, data)
-                
-                # 4. Download Button
                 st.download_button("📥 UNDUH FILE WORD (.DOCX)", docx.getvalue(), f"RPP_{mapel}_{topik}.docx", "application/vnd.openxmlformats-officedocument.wordprocessingml.document")
 
 st.markdown("""<div class="footer-text"><hr><p>Copyright © 2025 <b>Baskoro Pandu Aji, S.Pd.</b><br>All Rights Reserved.</p></div>""", unsafe_allow_html=True)
