@@ -136,8 +136,8 @@ with st.sidebar:
     st.markdown("""
     <div class="donation-box">
         DUKUNG PENGEMBANGAN<br>
-        Top Up GoPay:<br>
-        <div class="donation-number">081329951000</div>
+        Top Up DANA:<br>
+        <div class="donation-number">085121211125</div>
         a.n Baskoro Pandu Aji
     </div>
     """, unsafe_allow_html=True)
